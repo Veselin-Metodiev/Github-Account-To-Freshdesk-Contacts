@@ -1,10 +1,9 @@
-﻿using System.Net.Http.Headers;
+﻿namespace Github_Account_To_Freshdesk_Contacts.Controllers;
 
-namespace Github_Data_To_Freshdesk_Contacts.Controllers;
-
+using System.Net.Http.Headers;
 using System.Text;
 
-internal static class ApiController
+public static class ApiController
 {
 	public static async Task<string> GetGithubAccountInfo(string username)
 	{
@@ -18,33 +17,31 @@ internal static class ApiController
 		return body;
 	}
 
-	public static async Task CreateContact(string domain, string account)
+	public static async Task<HttpResponseMessage> CreateContact(string domain, string account, HttpClient client)
 	{
-		HttpClient client = ConfigureHttpClientForFreshdesk();
-
 		HttpContent content = new StringContent(account);
 		content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-		HttpResponseMessage respone =
+		HttpResponseMessage response =
 			await client.PostAsync($"https://{domain}.freshdesk.com/api/v2/contacts", content);
-		ValidateRespone(respone);
+		ValidateRespone(response);
+		return response;
 	}
 
-	public static async Task UpdateContact(string domain, string account, long id)
+	public static async Task<HttpResponseMessage> UpdateContact(string domain, string account, long id, HttpClient client)
 	{
-		HttpClient client = ConfigureHttpClientForFreshdesk();
-
 		HttpContent content = new StringContent(account);
 		content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
 		HttpResponseMessage respone =
 			await client.PatchAsync($"https://{domain}.freshdesk.com/api/v2/contacts/{id}", content);
 		ValidateRespone(respone);
+		return respone;
 	}
 
-	public static async Task<string> GetFreshdeskUser(string username, string domain)
+	public static async Task<string> GetFreshdeskContact(string username, string domain)
 	{
-		HttpClient client = ConfigureHttpClientForFreshdesk();
+		HttpClient client = CreateHttpClientForFreshdesk();
 
 		HttpResponseMessage response =
 			await client.GetAsync($"https://{domain}.freshdesk.com/api/v2/contacts/autocomplete?term={username}");
@@ -54,14 +51,14 @@ internal static class ApiController
 		return body;
 	}
 
-	private static HttpClient ConfigureHttpClientForFreshdesk()
+	public static HttpClient CreateHttpClientForFreshdesk()
 	{
 		HttpClient client = new();
 
-		string apiKey = "EjyTYiMhzb5B0xwGIsTh:X";
-		apiKey = Convert.ToBase64String(Encoding.Default.GetBytes(apiKey));
+		string apiKey = Environment.GetEnvironmentVariable("FRESHDESK_TOKEN")!;
+		string authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(apiKey + ":X"));
 
-		client.DefaultRequestHeaders.Add("Authorization", "Basic " + apiKey);
+		client.DefaultRequestHeaders.Add("Authorization", "Basic " + authInfo);
 
 		return client;
 	}

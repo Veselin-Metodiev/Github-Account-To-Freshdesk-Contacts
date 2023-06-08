@@ -1,10 +1,9 @@
-﻿using System.Text.Json.Serialization;
+﻿namespace Github_Account_To_Freshdesk_Contacts.Dtos;
 
-namespace Github_Data_To_Freshdesk_Contacts.Dtos
+using System.Text.Json.Serialization;
+
+public class FreshdeskContactDto
 {
-	internal class FreshdeskContactDto
-	{
-		[JsonPropertyName("id")]
-		public long Id { get; set; }
-	}
+	[JsonPropertyName("id")]
+	public long Id { get; set; }
 }

@@ -1,4 +1,4 @@
-﻿namespace Github_Data_To_Freshdesk_Contacts.Models;
+﻿namespace Github_Account_To_Freshdesk_Contacts.Models;
 
 using System.Text.Json.Serialization;
 

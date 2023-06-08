@@ -1,10 +1,9 @@
-﻿using Github_Data_To_Freshdesk_Contacts.Models;
-
-namespace Github_Data_To_Freshdesk_Contacts;
+﻿namespace Github_Account_To_Freshdesk_Contacts;
 
 using AutoMapper;
+using Models;
 
-internal class AutoMapperProfile : Profile
+public class AutoMapperProfile : Profile
 {
 	public AutoMapperProfile()
 	{
