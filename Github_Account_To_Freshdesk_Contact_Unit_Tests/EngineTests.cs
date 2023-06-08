@@ -1,5 +1,7 @@
+using Github_Account_To_Freshdesk_Contacts.DbModels;
 namespace Github_Account_To_Freshdesk_Contact.Tests;
 
+using Microsoft.Extensions.Configuration;
 using System;
 using Github_Account_To_Freshdesk_Contacts;
 using Xunit;
@@ -10,7 +12,7 @@ public class EngineTests
 
 	public EngineTests()
 	{
-		engine = new Engine();
+		engine = new Engine(new GithubAccountToFreshdeskContactContext(new ConfigurationBuilder()));
 	}
 
 	[Fact]
@@ -44,13 +46,13 @@ public class EngineTests
 	[Fact]
 	public void IsRegisteredReturnsTrue()
 	{
-		bool result = engine.IsRegistered("Name");
+		bool result = engine.IsRegisteredContact("Name");
 		Assert.True(result);
 	}
 
 	[Fact]
 	public void IsRegisteredReturnsFalse()
 	{
-		Assert.False(engine.IsRegistered("[]"));
+		Assert.False(engine.IsRegisteredContact("[]"));
 	}
 }

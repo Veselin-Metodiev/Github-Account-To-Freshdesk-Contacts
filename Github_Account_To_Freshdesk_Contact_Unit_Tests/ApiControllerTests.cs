@@ -1,5 +1,3 @@
-using Xunit.Sdk;
-
 namespace Github_Account_To_Freshdesk_Contact.Tests;
 
 using System.Threading.Tasks;

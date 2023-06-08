@@ -1,5 +1,7 @@
 namespace Github_Account_To_Freshdesk_Contact.Tests;
 
+using Github_Account_To_Freshdesk_Contacts.DbModels;
+using Microsoft.Extensions.Configuration;
 using System.Globalization;
 using System.Text.Json;
 using Github_Account_To_Freshdesk_Contacts.Dtos;
@@ -10,7 +12,7 @@ using AutoMapper;
 
 public static class DataProcessorTests
 {
-	private static Engine engine = new();
+	private static Engine engine = new(new GithubAccountToFreshdeskContactContext(new ConfigurationBuilder()));
 
 	[Fact]
 	public static void CanCallDeserializeToGithubAccount()
