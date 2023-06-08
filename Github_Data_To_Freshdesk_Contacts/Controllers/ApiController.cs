@@ -17,24 +17,24 @@ public static class ApiController
 		return body;
 	}
 
-	public static async Task<HttpResponseMessage> CreateContact(string domain, string account, HttpClient client)
+	public static async Task<HttpResponseMessage> CreateContact(string subdomain, string account, HttpClient client)
 	{
 		HttpContent content = new StringContent(account);
 		content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
 		HttpResponseMessage response =
-			await client.PostAsync($"https://{domain}.freshdesk.com/api/v2/contacts", content);
+			await client.PostAsync($"https://{subdomain}.freshdesk.com/api/v2/contacts", content);
 		ValidateRespone(response);
 		return response;
 	}
 
-	public static async Task<HttpResponseMessage> UpdateContact(string domain, string account, long id, HttpClient client)
+	public static async Task<HttpResponseMessage> UpdateContact(string subdomain, string account, long id, HttpClient client)
 	{
 		HttpContent content = new StringContent(account);
 		content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
 		HttpResponseMessage respone =
-			await client.PatchAsync($"https://{domain}.freshdesk.com/api/v2/contacts/{id}", content);
+			await client.PatchAsync($"https://{subdomain}.freshdesk.com/api/v2/contacts/{id}", content);
 		ValidateRespone(respone);
 		return respone;
 	}
