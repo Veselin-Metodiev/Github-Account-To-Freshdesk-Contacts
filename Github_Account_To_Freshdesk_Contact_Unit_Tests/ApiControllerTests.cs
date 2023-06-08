@@ -48,11 +48,11 @@ public static class ApiControllerTests
 	[InlineData("")]
 	[InlineData("    ")]
 	[InlineData(null)]
-	public static async Task CannotCallCreateContactWithInvalidDomain(string domain)
+	public static async Task CannotCallCreateContactWithInvalidDomain(string subdomain)
 	{
 		string accountAsJson = await File.ReadAllTextAsync(@"../../../MockData/GithubAccount.txt");
 		await Assert.ThrowsAsync<UriFormatException>(() => 
-			ApiController.CreateContact(domain, accountAsJson, ApiController.CreateHttpClientForFreshdesk()));
+			ApiController.CreateContact(subdomain, accountAsJson, ApiController.CreateHttpClientForFreshdesk()));
 	}
 
 	[Theory]
@@ -97,11 +97,11 @@ public static class ApiControllerTests
 	[InlineData("")]
 	[InlineData("    ")]
 	[InlineData(null)]
-	public static async Task CannotCallUpdateContactWithInvalidDomain(string domain)
+	public static async Task CannotCallUpdateContactWithInvalidDomain(string subdomain)
 	{
 		string accountAsJson = await File.ReadAllTextAsync(@"../../../MockData/GithubAccount.txt");
 		await Assert.ThrowsAsync<UriFormatException>(() => 
-			ApiController.UpdateContact(domain, accountAsJson, 103093976356, ApiController.CreateHttpClientForFreshdesk()));
+			ApiController.UpdateContact(subdomain, accountAsJson, 103093976356, ApiController.CreateHttpClientForFreshdesk()));
 	}
 
 	[Fact]
@@ -118,10 +118,10 @@ public static class ApiControllerTests
 	[InlineData("")]
 	[InlineData("    ")]
 	[InlineData(null)]
-	public static async Task CannotCalGetFreshdeskContactWithInvalidDomain(string domain)
+	public static async Task CannotCalGetFreshdeskContactWithInvalidDomain(string subdomain)
 	{
 		string accountAsJson = await File.ReadAllTextAsync(@"../../../MockData/GithubAccount.txt");
 		await Assert.ThrowsAsync<UriFormatException>(() =>
-			ApiController.GetFreshdeskContact("Veselin Metodiev", domain));
+			ApiController.GetFreshdeskContact("Veselin Metodiev", subdomain));
 	}
 }
