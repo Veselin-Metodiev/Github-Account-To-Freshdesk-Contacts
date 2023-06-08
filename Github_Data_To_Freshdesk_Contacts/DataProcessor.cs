@@ -1,8 +1,8 @@
 ﻿namespace Github_Account_To_Freshdesk_Contacts;
 
+using DbModels;
 using Dtos;
 using Models;
-
 using System.Text.Json;
 using AutoMapper;
 
@@ -22,4 +22,7 @@ public static class DataProcessor
 
 	public static string SerializeToFreshdeskContact(FreshdeskContact contact) =>
 		JsonSerializer.Serialize(contact);
+
+	public static GithubAccountDb ConvertGithubAccountToGithubAccountDb(GithubAccount account, IMapper mapper) =>
+		mapper.Map<GithubAccountDb>(account);
 }

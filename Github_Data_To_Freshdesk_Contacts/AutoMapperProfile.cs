@@ -1,5 +1,6 @@
 ﻿namespace Github_Account_To_Freshdesk_Contacts;
 
+using DbModels;
 using AutoMapper;
 using Models;
 
@@ -14,5 +15,9 @@ public class AutoMapperProfile : Profile
 				.MapFrom(s => s.Bio))
 			.ForMember(m => m.TwitterId, opt => opt
 				.MapFrom(s => s.TwitterUsername));
+
+		CreateMap<GithubAccount, GithubAccountDb>()
+			.ForMember(m => m.CreationDate, opt => opt
+				.MapFrom(s => s.CreatedAt));
 	}
 }
