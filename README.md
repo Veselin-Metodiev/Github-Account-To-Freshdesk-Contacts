@@ -13,7 +13,7 @@ Before running the application, make sure you have the following:
 - .Net 7
 - Github personal access token with permision to read user email address: [Create a personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).
 - Freshdesk account, domain and API key: [Generate an API key](https://developers.freshdesk.com/api/#authentication).
-- MS SQL Server.
+- MS SQL Server
 
 ## Getting Started
 
@@ -44,7 +44,11 @@ Before running the application, make sure you have the following:
 
 ## Usage
 
+### Program
 1. When prompted, enter the GitHub username for the account you want to retrieve information for given you have the token.
 2. The application will prompt you again to enter your freshdesk subdomain.
 3. The application will save the login, name and creation date in your database.
 4. Finally, the application will create or update a contact depending if you have a contact with the same name.
+
+### Unit tests
+Simply navigate to "Test" in Visual Studio and select "Run All Tests".
