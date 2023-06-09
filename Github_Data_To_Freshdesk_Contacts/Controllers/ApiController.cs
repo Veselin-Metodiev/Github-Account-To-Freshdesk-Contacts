@@ -1,16 +1,24 @@
-﻿namespace Github_Account_To_Freshdesk_Contacts.Controllers;
+﻿using Github_Account_To_Freshdesk_Contacts.Models;
+
+namespace Github_Account_To_Freshdesk_Contacts.Controllers;
 
 using System.Net.Http.Headers;
 using System.Text;
 
 public static class ApiController
 {
-	public static async Task<string> GetGithubAccountInfo(string username)
+	public static async Task<string> GetGithubAccountInfo(string username, HttpClient client)
 	{
-		HttpClient client = new();
-		client.DefaultRequestHeaders.Add("User-Agent", username);
-
 		HttpResponseMessage response = await client.GetAsync($"https://api.github.com/users/{username}");
+		ValidateRespone(response);
+
+		string body = await response.Content.ReadAsStringAsync();
+		return body;
+	}
+
+	public static async Task<string> GetGithubAccountEmail(HttpClient client)
+	{
+		HttpResponseMessage response = await client.GetAsync("https://api.github.com/user/emails");
 		ValidateRespone(response);
 
 		string body = await response.Content.ReadAsStringAsync();
@@ -59,6 +67,25 @@ public static class ApiController
 		string authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(apiKey + ":X"));
 
 		client.DefaultRequestHeaders.Add("Authorization", "Basic " + authInfo);
+
+		return client;
+	}
+
+	public static HttpClient CreateHttpClientForGithub(string username)
+	{
+		HttpClient client = new();
+		client.DefaultRequestHeaders.Add("User-Agent", username);
+
+		return client;
+	}
+
+	public static HttpClient CreateHttpClientForGithubEmail(string username)
+	{
+		string token = Environment.GetEnvironmentVariable("GITHUB_TOKEN")!;
+
+		HttpClient client = new();
+		client.DefaultRequestHeaders.Add("User-Agent", username);
+		client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
 
 		return client;
 	}

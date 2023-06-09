@@ -29,7 +29,9 @@ public class Engine
 
 		IMapper mapper = CreateMapper();
 
-		string accountAsJson = await ApiController.GetGithubAccountInfo(username);
+		string accountAsJson = await ApiController
+			.GetGithubAccountInfo(username, ApiController.CreateHttpClientForGithub(username));
+
 		GithubAccount account = DataProcessor.DeserializeToGithubAccount(accountAsJson);
 
 		GithubAccountDb accountDb = DataProcessor.ConvertGithubAccountToGithubAccountDb(account, mapper);
@@ -43,11 +45,16 @@ public class Engine
 			DbController.AddGithubAccount(accountDb, Context);
 		}
 
-		FreshdeskContact contact = DataProcessor.ConvertGithubAccountToFreshdeskContact(account, mapper);
+		string accountEmailAsJson = await ApiController
+			.GetGithubAccountEmail(ApiController.CreateHttpClientForGithubEmail(username));
 
-		Console.Write("Enter an email: ");
-		string email = ReadAndValidateInput(Console.ReadLine());
-		contact.Email = email;
+		GithubAccountEmail[] accountEmails = DataProcessor.DeserializeToGithubAccountEmails(accountEmailAsJson);
+
+		string primaryEmail = GetPrimaryEmail(accountEmails);
+
+		account.Email = primaryEmail;
+
+		FreshdeskContact contact = DataProcessor.ConvertGithubAccountToFreshdeskContact(account, mapper);
 
 		string contactAsJson = DataProcessor.SerializeToFreshdeskContact(contact);
 
@@ -78,6 +85,9 @@ public class Engine
 
 	public bool IsRegisteredDbEntity(string login) =>
 		Context.GithubAccounts.Any(a => a.Login == login);
+
+	public string GetPrimaryEmail(GithubAccountEmail[] emails) =>
+		emails.First(e => e.Primary).Email;
 
 	public string ReadAndValidateInput(string? input)
 	{

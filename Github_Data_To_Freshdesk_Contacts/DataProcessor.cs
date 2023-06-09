@@ -10,8 +10,10 @@ public static class DataProcessor
 {
 	public static GithubAccount DeserializeToGithubAccount(string accountAsJson) =>
 		JsonSerializer.Deserialize<GithubAccount>(accountAsJson)!;
-	
 
+	public static GithubAccountEmail[] DeserializeToGithubAccountEmails(string accountEmailAsJson) =>
+		JsonSerializer.Deserialize<GithubAccountEmail[]>(accountEmailAsJson)!;
+	
 	public static FreshdeskContactDto DeserializeToFreshdeskContactDto(string freshdeskContactAsJson) =>
 	JsonSerializer.Deserialize<FreshdeskContactDto[]>(freshdeskContactAsJson)![0];
 	
