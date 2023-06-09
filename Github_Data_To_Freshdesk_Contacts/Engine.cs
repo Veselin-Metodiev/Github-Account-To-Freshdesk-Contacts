@@ -45,10 +45,10 @@ public class Engine
 			DbController.AddGithubAccount(accountDb, Context);
 		}
 
-		string accountEmailAsJson = await ApiController
-			.GetGithubAccountEmail(ApiController.CreateHttpClientForGithubEmail(username));
+		string accountEmailsAsJson = await ApiController
+			.GetGithubAccountEmails(ApiController.CreateHttpClientForGithubEmail(username));
 
-		GithubAccountEmail[] accountEmails = DataProcessor.DeserializeToGithubAccountEmails(accountEmailAsJson);
+		GithubAccountEmail[] accountEmails = DataProcessor.DeserializeToGithubAccountEmails(accountEmailsAsJson);
 
 		string primaryEmail = GetPrimaryEmail(accountEmails);
 

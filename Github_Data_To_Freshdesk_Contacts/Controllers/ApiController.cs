@@ -16,7 +16,7 @@ public static class ApiController
 		return body;
 	}
 
-	public static async Task<string> GetGithubAccountEmail(HttpClient client)
+	public static async Task<string> GetGithubAccountEmails(HttpClient client)
 	{
 		HttpResponseMessage response = await client.GetAsync("https://api.github.com/user/emails");
 		ValidateRespone(response);
