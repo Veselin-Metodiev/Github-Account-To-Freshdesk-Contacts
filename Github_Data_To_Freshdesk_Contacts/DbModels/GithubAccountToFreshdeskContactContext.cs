@@ -20,7 +20,7 @@ public partial class GithubAccountToFreshdeskContactContext : DbContext
     public virtual DbSet<GithubAccountDb> GithubAccounts { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer(builder.Build().GetSection("ConnectionString").Value);
+        => optionsBuilder.UseSqlServer(builder.Build().GetConnectionString("DefaultConnection"));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

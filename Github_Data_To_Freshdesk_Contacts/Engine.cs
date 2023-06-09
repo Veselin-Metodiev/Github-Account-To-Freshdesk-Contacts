@@ -27,6 +27,9 @@ public class Engine
 		Console.Write("Enter a Github username: ");
 		string username = ReadAndValidateInput(Console.ReadLine());
 
+		Console.Write("Enter a Freshdesk subdomain: ");
+		string subdomain = ReadAndValidateInput(Console.ReadLine());
+
 		IMapper mapper = CreateMapper();
 
 		string accountAsJson = await ApiController
@@ -57,9 +60,6 @@ public class Engine
 		FreshdeskContact contact = DataProcessor.ConvertGithubAccountToFreshdeskContact(account, mapper);
 
 		string contactAsJson = DataProcessor.SerializeToFreshdeskContact(contact);
-
-		Console.Write("Enter a Freshdesk subdomain: ");
-		string subdomain = ReadAndValidateInput(Console.ReadLine());
 
 		string freshdeskContactAsJson = await ApiController.GetFreshdeskContact(contact.Name, subdomain);
 

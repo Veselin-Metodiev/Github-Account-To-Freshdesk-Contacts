@@ -8,18 +8,26 @@ public static class ApiController
 	public static async Task<string> GetGithubAccountInfo(string username, HttpClient client)
 	{
 		HttpResponseMessage response = await client.GetAsync($"https://api.github.com/users/{username}");
+		client.Dispose();
+
 		ValidateRespone(response);
 
 		string body = await response.Content.ReadAsStringAsync();
+		response.Dispose();
+
 		return body;
 	}
 
 	public static async Task<string> GetGithubAccountEmails(HttpClient client)
 	{
 		HttpResponseMessage response = await client.GetAsync("https://api.github.com/user/emails");
+		client.Dispose();
+
 		ValidateRespone(response);
 
 		string body = await response.Content.ReadAsStringAsync();
+		response.Dispose();
+
 		return body;
 	}
 
@@ -30,7 +38,12 @@ public static class ApiController
 
 		HttpResponseMessage response =
 			await client.PostAsync($"https://{subdomain}.freshdesk.com/api/v2/contacts", content);
+		client.Dispose();
+		content.Dispose();
+
 		ValidateRespone(response);
+		response.Dispose();
+
 		return response;
 	}
 
@@ -41,7 +54,12 @@ public static class ApiController
 
 		HttpResponseMessage respone =
 			await client.PatchAsync($"https://{subdomain}.freshdesk.com/api/v2/contacts/{id}", content);
+		client.Dispose();
+		content.Dispose();
+
 		ValidateRespone(respone);
+		respone.Dispose();
+
 		return respone;
 	}
 
@@ -51,9 +69,13 @@ public static class ApiController
 
 		HttpResponseMessage response =
 			await client.GetAsync($"https://{domain}.freshdesk.com/api/v2/contacts/autocomplete?term={username}");
+		client.Dispose();
+
 		ValidateRespone(response);
 
 		string body = await response.Content.ReadAsStringAsync();
+		response.Dispose();
+
 		return body;
 	}
 
