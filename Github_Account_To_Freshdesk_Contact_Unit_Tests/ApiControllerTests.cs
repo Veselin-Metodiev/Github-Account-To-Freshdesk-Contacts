@@ -10,11 +10,17 @@ public static class ApiControllerTests
 	[Fact]
 	public static async Task CanCallGetGithubAccountInfo()
 	{
-		string actual = await ApiController.GetGithubAccountInfo("Veselin-Metodiev");
+		string actual = await ApiController.GetGithubAccountInfo("Veselin-Metodiev", ApiController.CreateHttpClientForGithub("Veselin-Metodiev"));
 
 		string expected = await File.ReadAllTextAsync(@"../../../MockData/GithubAccount.txt");
 
 		Assert.Equal(expected, actual);
+	}
+
+	[Fact]
+	public static async Task CannotCallGetGithubAccountWithNullClient()
+	{
+		await Assert.ThrowsAsync<NullReferenceException>(() => ApiController.GetGithubAccountInfo("Veselin-Metodiev", null));
 	}
 
 	[Theory]
@@ -23,7 +29,7 @@ public static class ApiControllerTests
 	[InlineData(null)]
 	public static async Task CannotCallGetGithubAccountInfoWhenGivenInvalidUsername(string username)
 	{
-		await Assert.ThrowsAsync<FormatException>(() => ApiController.GetGithubAccountInfo(username));
+		await Assert.ThrowsAsync<FormatException>(() => ApiController.GetGithubAccountInfo(username, ApiController.CreateHttpClientForGithub(username)));
 	}
 
 	[Fact]
@@ -55,6 +61,31 @@ public static class ApiControllerTests
 			ApiController.CreateContact(subdomain, accountAsJson, ApiController.CreateHttpClientForFreshdesk()));
 	}
 
+	[Fact]
+	public static async Task CannotCallCreateContactWithNullClient()
+	{
+		string accountAsJson = await File.ReadAllTextAsync(@"../../../MockData/GithubAccount.txt");
+		await Assert.ThrowsAsync<NullReferenceException>(() => ApiController
+			.CreateContact("blank", accountAsJson, null));
+	}
+
+	[Fact]
+	public static async void CanCallGetGithubAccountEmail()
+	{
+		string actual = await ApiController.GetGithubAccountEmails(ApiController.CreateHttpClientForGithubEmail("Veselin-Metodiev"));
+
+		string expected = await File.ReadAllTextAsync(@"../../../MockData/GithubAccountEmail.txt");
+
+		Assert.Equal(expected, actual);
+	}
+
+
+	[Fact]
+	public static async Task CannotCallGetGithubAccountEmailWithNullClient()
+	{
+		await Assert.ThrowsAsync<NullReferenceException>(() => ApiController.GetGithubAccountEmails(null));
+	}
+
 	[Theory]
 	[InlineData("")]
 	[InlineData("    ")]
@@ -81,6 +112,14 @@ public static class ApiControllerTests
 		HttpResponseMessage response = await ApiController.UpdateContact("blank", accountAsJson, 103093976356, client);
 
 		Assert.Equivalent(response.StatusCode, HttpStatusCode.OK);
+	}
+
+	[Fact]
+	public static async Task CannotCallUpdateContactWithNullClient()
+	{
+		string accountAsJson = await File.ReadAllTextAsync(@"../../../MockData/GithubAccount.txt");
+		await Assert.ThrowsAsync<NullReferenceException>(() => ApiController
+			.UpdateContact("blank", accountAsJson, 103093976356, null));
 	}
 
 	[Theory]

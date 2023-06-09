@@ -35,6 +35,8 @@ public static class DataProcessorTests
 		Assert.Equivalent(expected, actual);
 	}
 
+
+
 	[Theory]
 	[InlineData("")]
 	[InlineData("   ")]
@@ -47,6 +49,44 @@ public static class DataProcessorTests
 	public static void CannotCallDeserializeToGithubAccountWithNullJsonAccount()
 	{
 		Assert.Throws<ArgumentNullException>(() => DataProcessor.DeserializeToGithubAccount(null));
+	}
+
+	[Fact]
+	public static void CanCallDeserializeToGithubAccountEmail()
+	{
+		string accountAsJson = File.ReadAllText(@"../../../MockData/GithubAccountEmail.txt");
+
+		GithubAccountEmail[] expected =
+		{
+			new()
+			{
+				Email = "vesselin.metodiev@gmail.com",
+				Primary = true
+			},
+			new()
+			{
+				Email = "109075090+Veselin-Metodiev@users.noreply.github.com",
+				Primary = false
+			}
+		};
+
+		GithubAccountEmail[] actual = DataProcessor.DeserializeToGithubAccountEmails(accountAsJson);
+
+		Assert.Equivalent(expected, actual);
+	}
+
+	[Theory]
+	[InlineData("")]
+	[InlineData("   ")]
+	public static void CannotCallDeserializeToGithubAccountEmailWithEmptyJsonAccount(string value)
+	{
+		Assert.Throws<JsonException>(() => DataProcessor.DeserializeToGithubAccountEmails(value));
+	}
+
+	[Fact]
+	public static void CannotCallDeserializeToGithubAccountEmailWithNullJsonAccount()
+	{
+		Assert.Throws<ArgumentNullException>(() => DataProcessor.DeserializeToGithubAccountEmails(null));
 	}
 
 	[Fact]
