@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 
 public partial class GithubAccountToFreshdeskContactContext : DbContext
 {
-	private readonly ConfigurationBuilder builder;
+	private readonly ConfigurationBuilder builder = null!;
 
     public GithubAccountToFreshdeskContactContext(ConfigurationBuilder builder)
     {
@@ -17,7 +17,8 @@ public partial class GithubAccountToFreshdeskContactContext : DbContext
     {
     }
 
-    public virtual DbSet<GithubAccountDb> GithubAccounts { get; set; }
+    public virtual DbSet<GithubAccountDb> GithubAccounts { get; set; } = null!;
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer(builder.Build().GetSection("ConnectionString").Value);
 

@@ -1,6 +1,4 @@
-﻿using Github_Account_To_Freshdesk_Contacts.Models;
-
-namespace Github_Account_To_Freshdesk_Contacts.Controllers;
+﻿namespace Github_Account_To_Freshdesk_Contacts.Controllers;
 
 using System.Net.Http.Headers;
 using System.Text;
